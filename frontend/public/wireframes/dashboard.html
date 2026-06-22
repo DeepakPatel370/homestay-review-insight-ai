@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wireframe - Dashboard</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Courier New', Courier, monospace;
+      color: #374151;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .screen-canvas {
+      width: 1200px;
+      background-color: #ffffff;
+      border: 3px solid #9ca3af;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 800px;
+    }
+    .header {
+      height: 60px;
+      border-bottom: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background-color: #f9fafb;
+    }
+    .logo-placeholder {
+      width: 150px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-link {
+      width: 80px;
+      height: 20px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-toggle-box {
+      width: 40px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+    }
+    .main {
+      flex-grow: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .page-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title-box {
+      width: 300px;
+      height: 30px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+    }
+    .sync-btn-box {
+      width: 150px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .stat-card {
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      padding: 15px;
+      border-radius: 6px;
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .stat-label {
+      height: 15px;
+      width: 70%;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      font-size: 8px;
+    }
+    .stat-value {
+      height: 25px;
+      width: 40%;
+      background-color: #d1d5db;
+      border: 1px dashed #6b7280;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .workspace-row {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 30px;
+    }
+    .panel {
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      padding: 20px;
+      border-radius: 8px;
+      min-height: 380px;
+    }
+    .panel-title {
+      height: 25px;
+      width: 200px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 20px;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .input-field-placeholder {
+      height: 45px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
+      font-size: 10px;
+    }
+    .textarea-field-placeholder {
+      height: 140px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
+      font-size: 10px;
+    }
+    .cta-submit {
+      height: 45px;
+      background-color: #d1d5db;
+      border: 2px dashed #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 11px;
+    }
+    .empty-state {
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    .empty-icon {
+      width: 50px;
+      height: 50px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      border-radius: 50%;
+    }
+    .empty-text {
+      width: 250px;
+      height: 40px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .footer {
+      height: 60px;
+      border-top: 2px solid #d1d5db;
+      background-color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      font-size: 9px;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-canvas">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-placeholder">[Logo: InsightStay]</div>
+      <div class="nav-links">
+        <div class="nav-link">[Nav: Home]</div>
+        <div class="nav-link">[Nav: Dash]</div>
+        <div class="nav-link">[Nav: About]</div>
+      </div>
+      <div class="theme-toggle-box">[Light]</div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="page-title-row">
+        <div class="title-box">[Dashboard Dashboard Title]</div>
+        <div class="sync-btn-box">[Sync Channels]</div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Total Reviews</div>
+          <div class="stat-value">148</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Rating</div>
+          <div class="stat-value">4.8</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Sentiment Index</div>
+          <div class="stat-value">92%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">AI Generated</div>
+          <div class="stat-value">112</div>
+        </div>
+      </div>
+
+      <!-- Workspace layout -->
+      <div class="workspace-row">
+        <!-- Left Panel: Input Review -->
+        <div class="panel">
+          <div class="panel-title">[Input Review Message]</div>
+          <div class="input-field-placeholder">[Input: Property Name Field]</div>
+          <div class="textarea-field-placeholder">[Textarea: Paste Review Message Content...]</div>
+          <div class="cta-submit">[CTA Button: Analyze & Generate Reply]</div>
+        </div>
+
+        <!-- Right Panel: Results Empty -->
+        <div class="panel">
+          <div class="panel-title">[AI Generation Output]</div>
+          <div class="empty-state">
+            <div class="empty-icon"></div>
+            <div class="empty-text">[Description: No review data analyzed yet. Click Analyze button on the left.]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>[Copyright InsightStay AI]</div>
+      <div class="logo-placeholder" style="width:80px;height:20px;">[Logo]</div>
+    </div>
+  </div>
+</body>
+</html>

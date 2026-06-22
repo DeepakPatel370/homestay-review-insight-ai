@@ -95,4 +95,7 @@ npm run build
 
 1. **Documented Component Library**: Constructed modular UI elements (`Button`, `Input`, `Modal`, `Toast`, `Loader`) under `frontend/src/components/ui/` with props documented using JSDoc styles.
 2. **Theme Toggle & Persistence**: Implemented a responsive theme toggler (backed by `localStorage` persistence) allowing real-time light and dark mode switching.
-
+3. **Layout Wireframes**:
+   - Shareable Figma Board: [Figma Wireframes Board](https://www.figma.com/board/18SZKYEPnDp1EjTV2552br/W3_Wireframes_TBI-26100216?node-id=0-1&t=DmjPhSZWPQxlGo23-1)
+   - Compiled PDF: `W3_Wireframes_TBI-26100216.pdf`
+4. **Responsive Breaking Checks**: Compiled responsive screenshots PDF: `W3_ResponsiveScreenshots_TBI-26100216.pdf`

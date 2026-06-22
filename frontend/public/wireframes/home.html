@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wireframe - Home</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Courier New', Courier, monospace;
+      color: #374151;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .screen-canvas {
+      width: 1200px;
+      background-color: #ffffff;
+      border: 3px solid #9ca3af;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 800px;
+    }
+    .header {
+      height: 60px;
+      border-bottom: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background-color: #f9fafb;
+    }
+    .logo-placeholder {
+      width: 150px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-link {
+      width: 80px;
+      height: 20px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .action-button {
+      width: 120px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main {
+      flex-grow: 1;
+      padding: 40px;
+    }
+    .hero-section {
+      text-align: center;
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      padding: 50px 20px;
+      border-radius: 6px;
+      margin-bottom: 40px;
+    }
+    .hero-title {
+      width: 60%;
+      height: 40px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .hero-subtitle {
+      width: 80%;
+      height: 25px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin: 0 auto 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-cta {
+      width: 200px;
+      height: 45px;
+      background-color: #d1d5db;
+      border: 2px dashed #6b7280;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .wireframe-card {
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      padding: 20px;
+      border-radius: 6px;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+    }
+    .card-title {
+      height: 20px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .card-desc {
+      height: 50px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+    .callout-section {
+      height: 120px;
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-radius: 6px;
+    }
+    .callout-text-box {
+      width: 60%;
+      height: 60px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    .callout-cta {
+      width: 180px;
+      height: 40px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    .footer {
+      height: 80px;
+      border-top: 2px solid #d1d5db;
+      background-color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      font-size: 10px;
+    }
+    .footer-brand {
+      width: 100px;
+      height: 20px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-links {
+      display: flex;
+      gap: 15px;
+    }
+    .footer-link {
+      width: 60px;
+      height: 15px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-canvas">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-placeholder">[Logo: InsightStay]</div>
+      <div class="nav-links">
+        <div class="nav-link">[Nav: Home]</div>
+        <div class="nav-link">[Nav: Dash]</div>
+        <div class="nav-link">[Nav: About]</div>
+      </div>
+      <div class="action-button">[Button: Login]</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="hero-title">[Hero Headline: Transform Guest Reviews...]</div>
+        <div class="hero-subtitle">[Hero Subhead: Analyze sentiment and generate response templates]</div>
+        <div class="hero-cta">[CTA Button: Analyze Reviews]</div>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="card-grid">
+        <div class="wireframe-card">
+          <div class="card-icon">[Icon]</div>
+          <div class="card-title">[Card Title: AI Response]</div>
+          <div class="card-desc">[Desc: Auto response drafts]</div>
+        </div>
+        <div class="wireframe-card">
+          <div class="card-icon">[Icon]</div>
+          <div class="card-title">[Card Title: Sentiment]</div>
+          <div class="card-desc">[Desc: Track overall happiness]</div>
+        </div>
+        <div class="wireframe-card">
+          <div class="card-icon">[Icon]</div>
+          <div class="card-title">[Card Title: Reputation]</div>
+          <div class="card-desc">[Desc: Protect Superhost score]</div>
+        </div>
+        <div class="wireframe-card">
+          <div class="card-icon">[Icon]</div>
+          <div class="card-title">[Card Title: Delighting]</div>
+          <div class="card-desc">[Desc: Address common issues]</div>
+        </div>
+      </div>
+
+      <!-- Callout -->
+      <div class="callout-section">
+        <div class="callout-text-box">[Text: Ready to elevate Superhost status? Check details.]</div>
+        <div class="callout-cta">[Button: Create Free Account]</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-brand">[Footer: Brand]</div>
+      <div class="footer-links">
+        <div class="footer-link">[Link]</div>
+        <div class="footer-link">[Link]</div>
+        <div class="footer-link">[Link]</div>
+      </div>
+      <div>[Copyright Placeholder]</div>
+    </div>
+  </div>
+</body>
+</html>

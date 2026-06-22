@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wireframe - AI Response Generator</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Courier New', Courier, monospace;
+      color: #374151;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .screen-canvas {
+      width: 1200px;
+      background-color: #ffffff;
+      border: 3px solid #9ca3af;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 800px;
+    }
+    .header {
+      height: 60px;
+      border-bottom: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background-color: #f9fafb;
+    }
+    .logo-placeholder {
+      width: 150px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .main {
+      flex-grow: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .feature-header-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 15px;
+    }
+    .title-box {
+      width: 320px;
+      height: 30px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .workspace-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .section-panel {
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      padding: 20px;
+      border-radius: 8px;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .panel-header {
+      height: 25px;
+      width: 180px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 15px;
+      font-size: 9px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .input-row {
+      margin-bottom: 15px;
+    }
+    .field-placeholder {
+      height: 40px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+    }
+    .textarea-placeholder {
+      height: 180px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+    }
+    .generate-btn {
+      height: 45px;
+      background-color: #d1d5db;
+      border: 2px dashed #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 11px;
+    }
+    .results-box {
+      border: 1px dashed #9ca3af;
+      background-color: #e5e7eb;
+      padding: 15px;
+      height: 80px;
+      margin-bottom: 15px;
+      font-size: 9px;
+    }
+    .themes-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .theme-tag {
+      height: 25px;
+      width: 90px;
+      background-color: #d1d5db;
+      border: 1px dashed #6b7280;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ai-response-box {
+      height: 180px;
+      border: 1px dashed #9ca3af;
+      background-color: #e5e7eb;
+      padding: 15px;
+      font-size: 9px;
+      line-height: 1.4;
+      margin-bottom: 15px;
+    }
+    .action-row {
+      display: flex;
+      gap: 15px;
+    }
+    .action-btn {
+      flex: 1;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: bold;
+    }
+    .footer {
+      height: 60px;
+      border-top: 2px solid #d1d5db;
+      background-color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-canvas">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-placeholder">[Logo: InsightStay]</div>
+      <div class="logo-placeholder" style="width:100px;height:25px;">[Nav: Back]</div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="feature-header-box">
+        <div class="title-box">[AI Response Generator System]</div>
+      </div>
+
+      <div class="workspace-split">
+        <!-- Left Panel: Form Input -->
+        <div class="section-panel">
+          <div>
+            <div class="panel-header">[Review Input Form]</div>
+            <div class="input-row">
+              <div style="font-size: 8px; margin-bottom: 5px;">Property Custom Name:</div>
+              <div class="field-placeholder">[Input: Sunset Haven Villa]</div>
+            </div>
+            <div class="input-row">
+              <div style="font-size: 8px; margin-bottom: 5px;">Paste Review Message:</div>
+              <div class="textarea-placeholder">[Textarea: Outdated check-in guide waiting 30 minutes outside...]</div>
+            </div>
+          </div>
+          <div class="generate-btn">[Button: Analyze & Generate Reply]</div>
+        </div>
+
+        <!-- Right Panel: AI Generation Output -->
+        <div class="section-panel">
+          <div>
+            <div class="panel-header">[AI Generated Output Preview]</div>
+            <div class="results-box">
+              [Confidence Metrics Box]<br>
+              - Sentiment: Mixed<br>
+              - Score: 55%
+            </div>
+            <div style="font-size: 8px; margin-bottom: 5px;">Detected Review Themes:</div>
+            <div class="themes-container">
+              <div class="theme-tag">[Clean Pool]</div>
+              <div class="theme-tag">[Check-in Delay]</div>
+            </div>
+            <div style="font-size: 8px; margin-bottom: 5px;">Suggested Draft Response:</div>
+            <div class="ai-response-box">
+              [AI Generated Reply Draft Copy Area Placeholder:<br>
+              "Hi Guest, Thank you for sharing your feedback. We apologize for the delay during check-in..."]
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-btn">[Copy Draft]</div>
+            <div class="action-btn">[Helpful Draft]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>[Copyright InsightStay AI]</div>
+    </div>
+  </div>
+</body>
+</html>

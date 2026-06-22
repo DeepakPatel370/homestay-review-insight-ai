@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wireframe - Review Details</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Courier New', Courier, monospace;
+      color: #374151;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .screen-canvas {
+      width: 1200px;
+      background-color: #ffffff;
+      border: 3px solid #9ca3af;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 800px;
+    }
+    .header {
+      height: 60px;
+      border-bottom: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background-color: #f9fafb;
+    }
+    .logo-placeholder {
+      width: 150px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .main {
+      flex-grow: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .back-nav-box {
+      width: 120px;
+      height: 25px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+    .detail-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .card-panel {
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      padding: 25px;
+      border-radius: 8px;
+      min-height: 400px;
+    }
+    .label-tag {
+      height: 20px;
+      width: 100px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 15px;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .title-block {
+      height: 35px;
+      background-color: #d1d5db;
+      border: 1px dashed #6b7280;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .review-body-block {
+      height: 150px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 25px;
+      padding: 15px;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+    .theme-pill-container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .theme-pill {
+      height: 25px;
+      width: 90px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      border-radius: 12px;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    .stats-table td {
+      border: 1px dashed #9ca3af;
+      padding: 12px;
+      font-size: 10px;
+    }
+    .table-cell-header {
+      background-color: #e5e7eb;
+      font-weight: bold;
+      width: 40%;
+    }
+    .chart-box {
+      height: 150px;
+      border: 1px dashed #9ca3af;
+      background-color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .footer {
+      height: 60px;
+      border-top: 2px solid #d1d5db;
+      background-color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-canvas">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-placeholder">[Logo: InsightStay]</div>
+      <div style="width: 200px; display: flex; justify-content: space-between;">
+        <div class="logo-placeholder" style="width:80px;height:25px;">[Nav: Link]</div>
+        <div class="logo-placeholder" style="width:80px;height:25px;">[Nav: Link]</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="back-nav-box">[Back to Dashboard]</div>
+      
+      <div class="detail-container">
+        <!-- Left Column: Feedback content -->
+        <div class="card-panel">
+          <div class="label-tag">[Airbnb Review]</div>
+          <div class="title-block">[Guest: Alex M. • Date: 2026-06-12]</div>
+          <div class="review-body-block">
+            [Review Description Content Placeholder:<br>
+            "The homestay was clean and the view was incredible! However, the host took a long time to respond to checkout queries and hot water wasn't working in the morning."]
+          </div>
+          <div style="font-size: 10px; font-weight: bold; margin-bottom: 10px;">[Detected Themes]</div>
+          <div class="theme-pill-container">
+            <div class="theme-pill">[Cleanliness]</div>
+            <div class="theme-pill">[View quality]</div>
+            <div class="theme-pill">[Hot Water]</div>
+            <div class="theme-pill">[Communication]</div>
+          </div>
+        </div>
+
+        <!-- Right Column: Analytics Metrics -->
+        <div class="card-panel">
+          <div style="font-size: 11px; font-weight: bold; margin-bottom: 15px;">[AI Review Metrics Breakdown]</div>
+          <table class="stats-table">
+            <tr>
+              <td class="table-cell-header">[Detected Sentiment]</td>
+              <td>[Mixed Sentiment]</td>
+            </tr>
+            <tr>
+              <td class="table-cell-header">[Confidence Score]</td>
+              <td>[68%]</td>
+            </tr>
+            <tr>
+              <td class="table-cell-header">[Urgency Index]</td>
+              <td>[Medium Urgency]</td>
+            </tr>
+          </table>
+
+          <div style="font-size: 10px; font-weight: bold; margin-bottom: 10px;">[Sentiment Trend Chart]</div>
+          <div class="chart-box">
+            [Bar Chart: Positive (68%) vs Negative (32%) Visual Placeholder]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>[Copyright InsightStay AI]</div>
+    </div>
+  </div>
+</body>
+</html>

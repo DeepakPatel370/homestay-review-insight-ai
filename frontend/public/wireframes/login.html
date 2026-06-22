@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wireframe - Login</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Courier New', Courier, monospace;
+      color: #374151;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .screen-canvas {
+      width: 1200px;
+      background-color: #ffffff;
+      border: 3px solid #9ca3af;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 800px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header {
+      width: 100%;
+      height: 60px;
+      border-bottom: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      padding: 0 30px;
+      background-color: #f9fafb;
+      box-sizing: border-box;
+    }
+    .logo-placeholder {
+      width: 150px;
+      height: 35px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .login-container {
+      width: 400px;
+      border: 2px dashed #9ca3af;
+      background-color: #f9fafb;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      text-align: center;
+      margin: 40px 0;
+    }
+    .form-header-logo {
+      width: 50px;
+      height: 50px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin: 0 auto 15px;
+      border-radius: 8px;
+    }
+    .form-title {
+      height: 25px;
+      width: 150px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin: 0 auto 10px;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .form-subtitle {
+      height: 15px;
+      width: 250px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin: 0 auto 30px;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sso-button {
+      height: 40px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .divider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .divider-line {
+      flex-grow: 1;
+      height: 1px;
+      background-color: #d1d5db;
+    }
+    .divider-text {
+      font-size: 8px;
+      color: #9ca3af;
+    }
+    .input-wrapper {
+      text-align: left;
+      margin-bottom: 15px;
+    }
+    .input-label {
+      height: 15px;
+      width: 100px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin-bottom: 5px;
+      font-size: 8px;
+    }
+    .input-field {
+      height: 40px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      width: 100px;
+      box-sizing: border-box;
+      width: 100%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      color: #9ca3af;
+    }
+    .submit-btn {
+      height: 45px;
+      background-color: #d1d5db;
+      border: 2px dashed #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 11px;
+      width: 100%;
+      margin-top: 25px;
+    }
+    .register-footer {
+      height: 20px;
+      width: 250px;
+      background-color: #e5e7eb;
+      border: 1px dashed #9ca3af;
+      margin: 25px auto 0;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer {
+      width: 100%;
+      height: 60px;
+      border-top: 2px solid #d1d5db;
+      background-color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-canvas">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-placeholder">[Logo: InsightStay]</div>
+    </div>
+
+    <!-- Center Login Form -->
+    <div class="login-container">
+      <div class="form-header-logo"></div>
+      <div class="form-title">[Welcome Back]</div>
+      <div class="form-subtitle">[Subtitle: Sign in to manage guest review drafts]</div>
+      
+      <!-- SSO -->
+      <div class="sso-button">[SSO Button: Continue with Google]</div>
+      
+      <div class="divider-row">
+        <div class="divider-line"></div>
+        <div class="divider-text">OR EMAIL LOGIN</div>
+        <div class="divider-line"></div>
+      </div>
+      
+      <!-- Inputs -->
+      <div class="input-wrapper">
+        <div class="input-label"></div>
+        <div class="input-field">[Input: you@example.com]</div>
+      </div>
+      
+      <div class="input-wrapper">
+        <div class="input-label"></div>
+        <div class="input-field">[Input: password placeholder]</div>
+      </div>
+      
+      <!-- Submit -->
+      <div class="submit-btn">[Submit Button: Sign In]</div>
+      
+      <div class="register-footer">[Footer: Don't have an account? Register]</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>[Copyright InsightStay AI]</div>
+    </div>
+  </div>
+</body>
+</html>
