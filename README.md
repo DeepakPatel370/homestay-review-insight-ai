@@ -88,3 +88,11 @@ npm run build
    - AI Response copy-to-clipboard functionality.
 5. **Modern Card Grid**: Responsive grid displaying product values with smooth transform hover state effects.
 6. **Detailed Pages**: Interactive login templates, workflow process steps on the about page, and clean layout baselines on the home page.
+
+---
+
+## 🎨 Features Implemented (Week 3 — UI/UX & Component Design)
+
+1. **Documented Component Library**: Constructed modular UI elements (`Button`, `Input`, `Modal`, `Toast`, `Loader`) under `frontend/src/components/ui/` with props documented using JSDoc styles.
+2. **Theme Toggle & Persistence**: Implemented a responsive theme toggler (backed by `localStorage` persistence) allowing real-time light and dark mode switching.
+

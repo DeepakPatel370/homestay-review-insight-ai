@@ -11,7 +11,7 @@ import './App.css'
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[#070a13] text-gray-100 font-sans selection:bg-sky-500/30 selection:text-sky-300">
+      <div className="flex flex-col min-h-screen bg-[#f8fafc] dark:bg-[#070a13] text-slate-900 dark:text-gray-100 font-sans selection:bg-sky-500/30 selection:text-sky-300 transition-colors duration-300">
         {/* Navigation Bar */}
         <Navbar />
         

@@ -15,32 +15,59 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: #070a13;
-  color: #f3f4f6;
+  background-color: #f8fafc;
+  color: #0f172a;
   overflow-x: hidden;
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: #070a13;
+  color: #f3f4f6;
 }
 
 /* Glassmorphism utility */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 .glass-card {
-  background: rgba(20, 30, 55, 0.3);
+  background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(15, 23, 42, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.01);
 }
 
 .glass-card:hover {
-  background: rgba(20, 30, 55, 0.55);
+  background: rgba(255, 255, 255, 0.85);
   border-color: rgba(14, 165, 233, 0.3);
   transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(14, 165, 233, 0.15);
+}
+
+.dark .glass-card {
+  background: rgba(20, 30, 55, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+}
+
+.dark .glass-card:hover {
+  background: rgba(20, 30, 55, 0.55);
+  border-color: rgba(14, 165, 233, 0.3);
   box-shadow: 0 12px 20px -8px rgba(14, 165, 233, 0.2);
 }
 
@@ -50,7 +77,7 @@ body {
 }
 
 .bg-gradient-text {
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 50%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -60,12 +87,21 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.dark ::-webkit-scrollbar-track {
   background: #070a13;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 4px;
 }
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
 ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }

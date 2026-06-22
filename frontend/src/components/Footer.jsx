@@ -61,7 +61,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-[#05070c] border-t border-white/5 pt-16 pb-12 mt-auto text-left">
+    <footer className="bg-slate-100 dark:bg-[#05070c] border-t border-slate-200 dark:border-white/5 pt-16 pb-12 mt-auto text-left transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-12">
           {/* Logo & Description */}
@@ -70,22 +70,22 @@ export default function Footer() {
               <div className="bg-gradient-brand p-1.5 rounded-lg text-white">
                 <Sparkles className="w-4 h-4" />
               </div>
-              <span className="font-display font-bold text-lg text-white">
+              <span className="font-display font-bold text-lg text-slate-900 dark:text-white">
                 Insight<span className="bg-gradient-brand bg-clip-text text-transparent">Stay</span>
               </span>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-sm font-light">
+            <p className="text-slate-600 dark:text-gray-400 text-sm leading-relaxed max-w-sm font-light">
               Elevating the hospitality experience through AI-driven review analysis. Empowers hosts to optimize services and generate professional guest relations.
             </p>
           </div>
 
           {/* Links: Product */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-widest mb-4">Product</h4>
+            <h4 className="text-xs font-semibold text-slate-900 dark:text-gray-300 uppercase tracking-widest mb-4">Product</h4>
             <ul className="space-y-2">
               {links.product.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-sm text-gray-400 hover:text-sky-400 transition-colors font-light">
+                  <Link to={link.path} className="text-sm text-slate-600 dark:text-gray-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors font-light">
                     {link.name}
                   </Link>
                 </li>
@@ -95,11 +95,11 @@ export default function Footer() {
 
           {/* Links: Resources */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-widest mb-4">Resources</h4>
+            <h4 className="text-xs font-semibold text-slate-900 dark:text-gray-300 uppercase tracking-widest mb-4">Resources</h4>
             <ul className="space-y-2">
               {links.resources.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-sm text-gray-400 hover:text-sky-400 transition-colors font-light">
+                  <Link to={link.path} className="text-sm text-slate-600 dark:text-gray-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors font-light">
                     {link.name}
                   </Link>
                 </li>
@@ -109,11 +109,11 @@ export default function Footer() {
 
           {/* Links: Company */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-widest mb-4">Company</h4>
+            <h4 className="text-xs font-semibold text-slate-900 dark:text-gray-300 uppercase tracking-widest mb-4">Company</h4>
             <ul className="space-y-2">
               {links.company.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-sm text-gray-400 hover:text-sky-400 transition-colors font-light">
+                  <Link to={link.path} className="text-sm text-slate-600 dark:text-gray-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors font-light">
                     {link.name}
                   </Link>
                 </li>
@@ -123,8 +123,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom Baseline */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-500 font-light">
+        <div className="pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-slate-500 dark:text-gray-500 font-light">
             © {currentYear} InsightStay AI. All rights reserved.
           </p>
 
@@ -138,7 +138,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-slate-800/40 border border-transparent hover:border-white/5 transition-all"
+                  className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-200 dark:text-gray-500 dark:hover:text-white dark:hover:bg-slate-800/40 border border-transparent hover:border-slate-300 dark:hover:border-white/5 transition-all"
                   aria-label={social.label}
                 >
                   <Icon />

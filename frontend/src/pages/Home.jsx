@@ -3,6 +3,7 @@ import Hero from '../components/Hero'
 import Card from '../components/Card'
 import { Sparkles, BarChart2, ShieldCheck, Heart, Award, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Button } from '../components/ui'
 
 export default function Home() {
   const features = [
@@ -48,10 +49,10 @@ export default function Home() {
       {/* Features/Stats Showcase */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <div className="text-center mb-16">
-          <h2 className="font-display text-3xl font-bold text-white mb-4">
+          <h2 className="font-display text-3xl font-bold text-slate-900 dark:text-white mb-4">
             Supercharge Your Homestay Operations
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto font-light">
+          <p className="text-slate-600 dark:text-gray-400 max-w-2xl mx-auto font-light">
             Spend less time writing messages and more time improving guest experiences. Let InsightStay handle the analytics.
           </p>
         </div>
@@ -72,28 +73,27 @@ export default function Home() {
         </div>
 
         {/* Callout Section */}
-        <div className="relative glass-panel rounded-3xl p-8 sm:p-12 overflow-hidden border border-white/10 text-left">
-          <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl"></div>
+        <div className="relative glass-panel rounded-3xl p-8 sm:p-12 overflow-hidden border border-slate-200 dark:border-white/10 text-left">
+          <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl"></div>
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
             <div className="lg:col-span-2">
-              <div className="flex items-center gap-2 text-sky-400 text-xs font-semibold uppercase tracking-wider mb-3">
+              <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400 text-xs font-semibold uppercase tracking-wider mb-3">
                 <Award className="w-4 h-4" />
                 <span>Host Excellence</span>
               </div>
-              <h3 className="font-display text-2xl sm:text-3xl font-bold text-white mb-4">
+              <h3 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4">
                 Ready to elevate your Superhost status?
               </h3>
-              <p className="text-gray-300 font-light leading-relaxed max-w-xl">
+              <p className="text-slate-700 dark:text-gray-300 font-light leading-relaxed max-w-xl">
                 Get started today and see review response time drop from hours to seconds. Join hundreds of property owners currently optimizing with InsightStay.
               </p>
             </div>
             <div className="flex justify-start lg:justify-end">
-              <Link
-                to="/login"
-                className="flex items-center gap-2 bg-white text-slate-950 hover:bg-gray-100 px-6 py-3.5 rounded-xl font-semibold shadow-xl transition-all hover:scale-105 active:scale-95"
-              >
-                <span>Create Free Account</span>
-                <ArrowRight className="w-4 h-4" />
+              <Link to="/login">
+                <Button variant="primary" size="lg" className="flex items-center gap-2">
+                  <span>Create Free Account</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
               </Link>
             </div>
           </div>

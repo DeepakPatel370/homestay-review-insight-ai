@@ -2,13 +2,11 @@ import React from 'react'
 import { ArrowUpRight } from 'lucide-react'
 
 export default function Card({ title, description, image, actionText, actionLink, onClick, tags, icon: Icon }) {
-  const CardWrapper = onClick ? 'button' : 'div'
-  
   return (
     <div className="glass-card rounded-2xl overflow-hidden flex flex-col h-full group text-left">
       {/* Card Image or Icon Header */}
       {image ? (
-        <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-white/5">
+        <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-white/5">
           <img
             src={image}
             alt={title}
@@ -19,7 +17,7 @@ export default function Card({ title, description, image, actionText, actionLink
         </div>
       ) : Icon ? (
         <div className="p-6 pb-2">
-          <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-sky-500/10 text-sky-400 border border-sky-500/20 group-hover:scale-110 transition-transform duration-300">
+          <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 group-hover:scale-110 transition-transform duration-300">
             <Icon className="w-6 h-6" />
           </div>
         </div>
@@ -34,7 +32,7 @@ export default function Card({ title, description, image, actionText, actionLink
               {tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="px-2 py-0.5 rounded-lg bg-slate-800 text-gray-400 border border-white/5 text-[10px] font-medium"
+                  className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-gray-400 border border-slate-200 dark:border-white/5 text-[10px] font-semibold"
                 >
                   {tag}
                 </span>
@@ -43,23 +41,23 @@ export default function Card({ title, description, image, actionText, actionLink
           )}
 
           {/* Title */}
-          <h3 className="font-display font-bold text-lg text-white group-hover:text-sky-300 transition-colors mb-2">
+          <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-300 transition-colors mb-2">
             {title}
           </h3>
 
           {/* Description */}
-          <p className="text-gray-400 text-sm leading-relaxed mb-6 font-light">
+          <p className="text-slate-600 dark:text-gray-400 text-sm leading-relaxed mb-6 font-light">
             {description}
           </p>
         </div>
 
         {/* Action Button/Link */}
         {(actionText || onClick || actionLink) && (
-          <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+          <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
             {actionLink ? (
               <a
                 href={actionLink}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-sky-400 hover:text-sky-300 group-hover:translate-x-0.5 transition-all"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 group-hover:translate-x-0.5 transition-all cursor-pointer"
               >
                 <span>{actionText || 'Learn More'}</span>
                 <ArrowUpRight className="w-4 h-4" />
@@ -67,13 +65,13 @@ export default function Card({ title, description, image, actionText, actionLink
             ) : onClick ? (
               <button
                 onClick={onClick}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-sky-400 hover:text-sky-300 group-hover:translate-x-0.5 transition-all text-left"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 group-hover:translate-x-0.5 transition-all text-left cursor-pointer"
               >
                 <span>{actionText || 'Action'}</span>
                 <ArrowUpRight className="w-4 h-4" />
               </button>
             ) : (
-              <span className="text-sm font-semibold text-gray-400">
+              <span className="text-sm font-semibold text-slate-500 dark:text-gray-400">
                 {actionText}
               </span>
             )}
