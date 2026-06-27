@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Sparkles, MessageSquare, ShieldAlert, Award, Copy, Check, ThumbsUp, RefreshCw, Info, Star, Trash2 } from 'lucide-react'
 import { Button, Input, Modal, Loader, useToast } from '../components/ui'
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Child Component for each review history item
 function ReviewHistoryItem({ review, onDelete, onUpdate, onSelect }) {
