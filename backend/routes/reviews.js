@@ -1,46 +1,8 @@
 import express from 'express';
+import Property from '../models/Property.js';
+import Review from '../models/Review.js';
 
 const router = express.Router();
-
-// Helper to generate unique IDs
-const generateId = () => Math.random().toString(36).substring(2, 9);
-
-// Initial in-memory database of reviews
-let reviews = [
-  {
-    id: 'r1',
-    propertyName: 'Sunset Haven Villa',
-    text: 'We had the most wonderful stay! The host left us fresh cookies, the house was immaculate, and the beds were so comfy. 10/10 will come back!',
-    sentiment: 'positive',
-    score: 98,
-    themes: ['Hospitality', 'Cleanliness', 'Comfort'],
-    reply: `Hi Guest,\n\nThank you so much for your glowing review! We are absolutely thrilled to hear you enjoyed the cookies and found the beds comfortable. Maintaining an immaculate home and providing top-notch hospitality here at Sunset Haven Villa is our priority. We look forward to welcoming you back for another 10/10 stay!\n\nBest regards,\nSunset Haven Villa Team`,
-    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
-    status: 'responded'
-  },
-  {
-    id: 'r2',
-    propertyName: 'Sunset Haven Villa',
-    text: 'The villa was absolutely stunning! Clean pools, great layout. Only issue was check-in instructions were outdated and we had to wait 30 minutes outside.',
-    sentiment: 'mixed',
-    score: 55,
-    themes: ['Amenities', 'Check-in Delay', 'Villa Quality'],
-    reply: `Hi Guest,\n\nThank you for sharing your feedback. We are happy that you enjoyed the stunning villa and clean pool! However, we sincerely apologize for the delay during check-in due to the outdated instructions. We have updated our check-in guide at Sunset Haven Villa immediately to ensure this does not happen again. We hope to host you again for a seamless experience.\n\nWarm regards,\nSunset Haven Villa Team`,
-    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
-    status: 'responded'
-  },
-  {
-    id: 'r3',
-    propertyName: 'Sunset Haven Villa',
-    text: 'Worst experience ever. The sheets were dirty, the air conditioning was leaking, and the host refused to refund us. Avoid!',
-    sentiment: 'negative',
-    score: 12,
-    themes: ['Cleanliness', 'AC Issue', 'Refund Dispute'],
-    reply: `Hi Guest,\n\nWe are deeply sorry to hear about your experience. Cleanliness and functional amenities are critical to us at Sunset Haven Villa, and we apologize that the sheets and air conditioning fell short. We take these matters seriously and are addressing them with our maintenance staff. Regarding your refund request, our management is reviewing the logs to resolve this fairly. We appreciate your feedback.\n\nSincerely,\nCustomer Relations`,
-    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), // 10 days ago
-    status: 'pending'
-  }
-];
 
 // Seed list of external reviews used when syncing
 const SYNC_SOURCE_REVIEWS = [
@@ -138,164 +100,211 @@ const analyzeReviewText = (propertyName, text) => {
 };
 
 // 1. GET /api/reviews - Get all reviews (with optional search query `q` and filtering by `sentiment`)
-router.get('/', (req, res) => {
-  const { q, sentiment } = req.query;
-  let filteredReviews = [...reviews];
+router.get('/', async (req, res) => {
+  try {
+    const { q, sentiment } = req.query;
+    let query = {};
 
-  // Apply sentiment filter
-  if (sentiment) {
-    filteredReviews = filteredReviews.filter(r => r.sentiment.toLowerCase() === sentiment.toLowerCase());
+    // Apply sentiment filter
+    if (sentiment) {
+      query.sentiment = sentiment.toLowerCase();
+    }
+
+    // Apply search query filter
+    if (q) {
+      const searchVal = q.toLowerCase();
+      query.$or = [
+        { text: new RegExp(searchVal, 'i') },
+        { propertyName: new RegExp(searchVal, 'i') },
+        { reply: new RegExp(searchVal, 'i') },
+        { themes: new RegExp(searchVal, 'i') }
+      ];
+    }
+
+    // Sort by createdAt descending
+    const matchedReviews = await Review.find(query).sort({ createdAt: -1 });
+    res.status(200).json(matchedReviews);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
-
-  // Apply search query filter
-  if (q) {
-    const searchVal = q.toLowerCase();
-    filteredReviews = filteredReviews.filter(r => 
-      r.text.toLowerCase().includes(searchVal) ||
-      r.propertyName.toLowerCase().includes(searchVal) ||
-      r.reply.toLowerCase().includes(searchVal) ||
-      r.themes.some(t => t.toLowerCase().includes(searchVal))
-    );
-  }
-
-  // Sort by createdAt descending
-  filteredReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-  res.status(200).json(filteredReviews);
 });
 
 // 2. GET /api/reviews/stats - Calculate and return dashboard summary statistics
-router.get('/stats', (req, res) => {
-  const totalReviews = reviews.length;
-  
-  if (totalReviews === 0) {
-    return res.status(200).json({
-      totalReviews: 0,
-      avgRating: 0,
-      sentimentIndex: '0%',
-      aiResponses: 0
+router.get('/stats', async (req, res) => {
+  try {
+    const reviews = await Review.find();
+    const totalReviews = reviews.length;
+    
+    if (totalReviews === 0) {
+      return res.status(200).json({
+        totalReviews: 0,
+        avgRating: "0.0",
+        sentimentIndex: '0%',
+        aiResponses: 0
+      });
+    }
+
+    // Calculate Average Rating out of 5.0 based on sentiment score (score is 0-100)
+    // Mapping formula: rating = 1.0 + (score / 100) * 4.0
+    const totalScore = reviews.reduce((sum, r) => sum + r.score, 0);
+    const avgScore = totalScore / totalReviews;
+    const avgRating = (1.0 + (avgScore / 100) * 4.0).toFixed(1);
+
+    // Calculate Sentiment Index: percentage of reviews that are positive or mixed
+    const positiveOrMixed = reviews.filter(r => r.sentiment === 'positive' || r.sentiment === 'mixed').length;
+    const sentimentIndex = `${Math.round((positiveOrMixed / totalReviews) * 100)}%`;
+
+    // Count generated replies
+    const aiResponses = reviews.filter(r => r.reply && r.reply.length > 0).length;
+
+    res.status(200).json({
+      totalReviews,
+      avgRating,
+      sentimentIndex,
+      aiResponses
     });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
-
-  // Calculate Average Rating out of 5.0 based on sentiment score (score is 0-100)
-  // Mapping formula: rating = 1.0 + (score / 100) * 4.0
-  const totalScore = reviews.reduce((sum, r) => sum + r.score, 0);
-  const avgScore = totalScore / totalReviews;
-  const avgRating = (1.0 + (avgScore / 100) * 4.0).toFixed(1);
-
-  // Calculate Sentiment Index: percentage of reviews that are positive or mixed
-  const positiveOrMixed = reviews.filter(r => r.sentiment === 'positive' || r.sentiment === 'mixed').length;
-  const sentimentIndex = `${Math.round((positiveOrMixed / totalReviews) * 100)}%`;
-
-  // Count generated replies
-  const aiResponses = reviews.filter(r => r.reply && r.reply.length > 0).length;
-
-  res.status(200).json({
-    totalReviews,
-    avgRating,
-    sentimentIndex,
-    aiResponses
-  });
 });
 
 // 3. GET /api/reviews/:id - Get details of a single review
-router.get('/:id', (req, res) => {
-  const review = reviews.find(r => r.id === req.params.id);
-  if (!review) {
-    return res.status(404).json({ success: false, message: 'Review not found' });
+router.get('/:id', async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.id);
+    if (!review) {
+      return res.status(404).json({ success: false, message: 'Review not found' });
+    }
+    res.status(200).json(review);
+  } catch (error) {
+    // Check if error is due to invalid ObjectId format
+    if (error.name === 'CastError') {
+      return res.status(404).json({ success: false, message: 'Review not found' });
+    }
+    res.status(500).json({ success: false, message: error.message });
   }
-  res.status(200).json(review);
 });
 
 // 4. POST /api/reviews - Add a new review and analyze it
-router.post('/', (req, res) => {
-  const { propertyName, text } = req.body;
+router.post('/', async (req, res) => {
+  try {
+    const { propertyName, text } = req.body;
 
-  if (!propertyName || !propertyName.trim()) {
-    return res.status(400).json({ success: false, message: 'Property name is required.' });
+    if (!propertyName || !propertyName.trim()) {
+      return res.status(400).json({ success: false, message: 'Property name is required.' });
+    }
+
+    if (!text || !text.trim()) {
+      return res.status(400).json({ success: false, message: 'Review text is required.' });
+    }
+
+    // Perform Simulated AI analysis
+    const analysis = analyzeReviewText(propertyName, text);
+
+    // Find or create associated Property
+    let property = await Property.findOne({ name: propertyName.trim() });
+    if (!property) {
+      property = await Property.create({ name: propertyName.trim() });
+    }
+
+    const newReview = await Review.create({
+      property: property._id,
+      propertyName: propertyName.trim(),
+      text: text.trim(),
+      ...analysis,
+      status: 'responded'
+    });
+
+    res.status(201).json(newReview);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
-
-  if (!text || !text.trim()) {
-    return res.status(400).json({ success: false, message: 'Review text is required.' });
-  }
-
-  // Perform Simulated AI analysis
-  const analysis = analyzeReviewText(propertyName, text);
-
-  const newReview = {
-    id: generateId(),
-    propertyName,
-    text,
-    ...analysis,
-    createdAt: new Date().toISOString(),
-    status: 'responded'
-  };
-
-  reviews.push(newReview);
-  res.status(201).json(newReview);
 });
 
 // 5. PUT /api/reviews/:id - Update a review or its suggested response
-router.put('/:id', (req, res) => {
-  const reviewIndex = reviews.findIndex(r => r.id === req.params.id);
-  
-  if (reviewIndex === -1) {
-    return res.status(404).json({ success: false, message: 'Review not found' });
+router.put('/:id', async (req, res) => {
+  try {
+    const { propertyName, text, sentiment, score, themes, reply, status } = req.body;
+    
+    const review = await Review.findById(req.params.id);
+    if (!review) {
+      return res.status(404).json({ success: false, message: 'Review not found' });
+    }
+
+    if (propertyName !== undefined) {
+      review.propertyName = propertyName;
+      // Also update or associate property reference
+      let property = await Property.findOne({ name: propertyName.trim() });
+      if (!property) {
+        property = await Property.create({ name: propertyName.trim() });
+      }
+      review.property = property._id;
+    }
+    if (text !== undefined) review.text = text;
+    if (sentiment !== undefined) review.sentiment = sentiment;
+    if (score !== undefined) review.score = score;
+    if (themes !== undefined) review.themes = themes;
+    if (reply !== undefined) review.reply = reply;
+    if (status !== undefined) review.status = status;
+    review.updatedAt = new Date();
+
+    const updatedReview = await review.save();
+    res.status(200).json(updatedReview);
+  } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(404).json({ success: false, message: 'Review not found' });
+    }
+    res.status(500).json({ success: false, message: error.message });
   }
-
-  const existingReview = reviews[reviewIndex];
-  const { propertyName, text, sentiment, score, themes, reply, status } = req.body;
-
-  const updatedReview = {
-    ...existingReview,
-    propertyName: propertyName !== undefined ? propertyName : existingReview.propertyName,
-    text: text !== undefined ? text : existingReview.text,
-    sentiment: sentiment !== undefined ? sentiment : existingReview.sentiment,
-    score: score !== undefined ? score : existingReview.score,
-    themes: themes !== undefined ? themes : existingReview.themes,
-    reply: reply !== undefined ? reply : existingReview.reply,
-    status: status !== undefined ? status : existingReview.status,
-    updatedAt: new Date().toISOString()
-  };
-
-  reviews[reviewIndex] = updatedReview;
-  res.status(200).json(updatedReview);
 });
 
 // 6. DELETE /api/reviews/:id - Delete a review
-router.delete('/:id', (req, res) => {
-  const reviewIndex = reviews.findIndex(r => r.id === req.params.id);
-  
-  if (reviewIndex === -1) {
-    return res.status(404).json({ success: false, message: 'Review not found' });
+router.delete('/:id', async (req, res) => {
+  try {
+    const review = await Review.findByIdAndDelete(req.params.id);
+    if (!review) {
+      return res.status(404).json({ success: false, message: 'Review not found' });
+    }
+    res.status(204).send(); // 204 No Content
+  } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(404).json({ success: false, message: 'Review not found' });
+    }
+    res.status(500).json({ success: false, message: error.message });
   }
-
-  reviews.splice(reviewIndex, 1);
-  res.status(204).send(); // 204 No Content
 });
 
 // 7. POST /api/reviews/sync - Simulate review syncing from external channels (Airbnb & Vrbo)
-router.post('/sync', (req, res) => {
-  // Select reviews that haven't been added yet (or add new instances with fresh IDs)
-  const newlySynced = SYNC_SOURCE_REVIEWS.map(r => ({
-    id: generateId(),
-    propertyName: r.propertyName,
-    text: r.text,
-    sentiment: r.sentiment,
-    score: r.score,
-    themes: [...r.themes],
-    reply: r.reply,
-    createdAt: new Date().toISOString(),
-    status: 'responded'
-  }));
+router.post('/sync', async (req, res) => {
+  try {
+    const newlySynced = [];
+    for (const r of SYNC_SOURCE_REVIEWS) {
+      let property = await Property.findOne({ name: r.propertyName });
+      if (!property) {
+        property = await Property.create({ name: r.propertyName });
+      }
+      const newReview = await Review.create({
+        property: property._id,
+        propertyName: r.propertyName,
+        text: r.text,
+        sentiment: r.sentiment,
+        score: r.score,
+        themes: [...r.themes],
+        reply: r.reply,
+        status: 'responded'
+      });
+      newlySynced.push(newReview);
+    }
 
-  reviews = [...newlySynced, ...reviews];
-  res.status(200).json({
-    success: true,
-    message: `${newlySynced.length} reviews synced from Airbnb & Vrbo!`,
-    syncedCount: newlySynced.length,
-    reviews: newlySynced
-  });
+    res.status(200).json({
+      success: true,
+      message: `${newlySynced.length} reviews synced from Airbnb & Vrbo!`,
+      syncedCount: newlySynced.length,
+      reviews: newlySynced
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 export default router;

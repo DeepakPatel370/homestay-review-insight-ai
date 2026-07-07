@@ -17,8 +17,62 @@ An AI-powered web application that analyzes guest reviews, detects sentiment and
 - **CORS** (cross-origin resource sharing)
 - **Dotenv** (environment variables configuration)
 - **Nodemon** (hot reloading in development)
-- **In-Memory Store** (simulated review analysis database)
-- **MongoDB & JWT Authentication** (Planned for Week 5)
+- **MongoDB & Mongoose ODM** (Integrated in Week 5 for full CRUD operations and data persistence)
+
+---
+
+## 💾 Database Integration & Schema (Week 5)
+
+### Database Choice and Rationale
+We chose **MongoDB** (with **Mongoose ODM**) as the application database. Review data is naturally document-oriented, representing multi-themed analysis reports containing nested properties (like arrays of strings for `themes`, dynamic confidence scores, and text fields). A document-based model provides the structural flexibility required to expand reviews and response templates without rigid relational joint table migrations.
+
+### Entity Relationship Diagram (ERD)
+The database schema consists of three primary collections:
+1. **User**: Represents hosts or management users.
+2. **Property**: Represents homestay listings/properties.
+3. **Review**: Represents individual guest reviews connected to a specific Property listing via a 1-to-many relationship (`property` ObjectId reference).
+
+```mermaid
+classDiagram
+    direction LR
+    class User {
+        +ObjectId _id
+        +String name
+        +String email
+        +String password
+        +Date createdAt
+    }
+    class Property {
+        +ObjectId _id
+        +String name
+        +Date createdAt
+    }
+    class Review {
+        +ObjectId _id
+        +ObjectId property
+        +String propertyName
+        +String text
+        +String sentiment
+        +Number score
+        +String[] themes
+        +String reply
+        +String status
+        +Date createdAt
+        +Date updatedAt
+    }
+    User "1" --> "0..*" Property : owns
+    Property "1" --> "0..*" Review : has
+```
+
+### Set Up the Database
+To connect the application to MongoDB:
+1. Ensure a local MongoDB instance is running at `mongodb://localhost:27017` or obtain a connection string from [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. Create or edit the `backend/.env` file.
+3. Add the `MONGO_URI` environment variable:
+   ```env
+   MONGO_URI=mongodb://localhost:27017/insightstay
+   ```
+4. Start the backend server (`npm run start` or `npm run dev`). Mongoose will connect to the database and automatically seed default review reports if the `Review` collection is empty.
 
 ---
 
