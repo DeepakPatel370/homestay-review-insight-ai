@@ -2,8 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import passport from 'passport';
+import { configurePassport } from './config/passport.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import reviewsRouter from './routes/reviews.js';
+import authRouter from './routes/auth.js';
 import Property from './models/Property.js';
 import Review from './models/Review.js';
 
@@ -81,15 +84,21 @@ mongoose.connect(MONGO_URI)
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS with dynamic settings
+// Initialize Passport config
+configurePassport();
+
+// Enable CORS with dynamic settings (only allow frontend origin in production)
 app.use(cors({
-  origin: '*', // Allow all origins for initial testing, can narrow down to http://localhost:5173
+  origin: process.env.NODE_ENV === 'production' ? 'http://localhost:5173' : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Body parsing middleware
 app.use(express.json());
+
+// Initialize Passport middleware
+app.use(passport.initialize());
 
 // Request logger middleware
 app.use((req, res, next) => {
@@ -107,6 +116,7 @@ app.get('/health', (req, res) => {
 });
 
 // Register API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/reviews', reviewsRouter);
 
 // Undefined routes handler (404)

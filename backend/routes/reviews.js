@@ -1,8 +1,12 @@
 import express from 'express';
 import Property from '../models/Property.js';
 import Review from '../models/Review.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Apply authentication middleware to all reviews endpoints
+router.use(requireAuth);
 
 // Seed list of external reviews used when syncing
 const SYNC_SOURCE_REVIEWS = [

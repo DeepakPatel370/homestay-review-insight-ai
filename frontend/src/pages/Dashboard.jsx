@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Sparkles, MessageSquare, ShieldAlert, Award, Copy, Check, ThumbsUp, RefreshCw, Info, Star, Trash2 } from 'lucide-react'
 import { Button, Input, Modal, Loader, useToast } from '../components/ui'
+import { useAuth } from '../context/AuthContext'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -118,6 +119,7 @@ function ReviewHistoryItem({ review, onDelete, onUpdate, onSelect }) {
 }
 
 export default function Dashboard() {
+  const { authFetch } = useAuth()
   const [copied, setCopied] = useState(false)
   const [reviewInput, setReviewInput] = useState('')
   const [propertyName, setPropertyName] = useState('Sunset Haven Villa')
@@ -173,7 +175,7 @@ export default function Dashboard() {
       if (sentiment) params.push(`sentiment=${encodeURIComponent(sentiment)}`);
       if (params.length > 0) url += `?${params.join('&')}`;
 
-      const res = await fetch(url);
+      const res = await authFetch(url);
       if (!res.ok) throw new Error('Failed to load reviews history.');
       const data = await res.json();
       setReviews(data);
@@ -188,7 +190,7 @@ export default function Dashboard() {
   // Fetch dashboard stats from backend
   const fetchStats = async () => {
     try {
-      const res = await fetch(`${API_BASE}/reviews/stats`);
+      const res = await authFetch(`${API_BASE}/reviews/stats`);
       if (!res.ok) throw new Error('Failed to load statistics.');
       const data = await res.json();
       setStats(data);
@@ -229,7 +231,7 @@ export default function Dashboard() {
     setAnalysisResult(null)
 
     try {
-      const res = await fetch(`${API_BASE}/reviews`, {
+      const res = await authFetch(`${API_BASE}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ propertyName, text: reviewInput })
@@ -261,7 +263,7 @@ export default function Dashboard() {
     toast.show('Syncing review channels...', 'info')
     
     try {
-      const res = await fetch(`${API_BASE}/reviews/sync`, { method: 'POST' });
+      const res = await authFetch(`${API_BASE}/reviews/sync`, { method: 'POST' });
       if (!res.ok) throw new Error('Sync failed.');
       
       const data = await res.json();
@@ -280,7 +282,7 @@ export default function Dashboard() {
   // Handle Review Deletion via DELETE endpoint
   const handleDeleteReview = async (id) => {
     try {
-      const res = await fetch(`${API_BASE}/reviews/${id}`, { method: 'DELETE' });
+      const res = await authFetch(`${API_BASE}/reviews/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete review report.');
       
       // If deleted item is currently viewed in draft result, clear it
@@ -301,7 +303,7 @@ export default function Dashboard() {
   // Handle Update Response Reply via PUT endpoint
   const handleUpdateReply = async (id, updatedReply) => {
     try {
-      const res = await fetch(`${API_BASE}/reviews/${id}`, {
+      const res = await authFetch(`${API_BASE}/reviews/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reply: updatedReply })

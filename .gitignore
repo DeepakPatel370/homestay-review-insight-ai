@@ -6,3 +6,5 @@ dist/
 .next/
 screenshots/
 backend/data/
+*.pdf
+

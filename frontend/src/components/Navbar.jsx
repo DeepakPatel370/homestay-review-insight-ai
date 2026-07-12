@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Sparkles, Menu, X, User, BarChart3, Info, LogIn, Home, Sun, Moon } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
+import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const { user, logout } = useAuth()
 
   const toggleMenu = () => setIsOpen(!isOpen)
   const closeMenu = () => setIsOpen(false)
@@ -59,24 +61,42 @@ export default function Navbar() {
               {theme === 'dark' ? <Sun className="w-4.5 h-4.5 text-amber-400 animate-pulse" /> : <Moon className="w-4.5 h-4.5 text-indigo-600" />}
             </button>
 
-            <Link
-              to="/login"
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              <LogIn className="w-4 h-4" />
-              <span>Login</span>
-            </Link>
-            
-            <Link
-              to="/dashboard"
-              className="bg-gradient-brand hover:opacity-95 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-indigo-500/10 hover:shadow-sky-500/20"
-            >
-              Get Started
-            </Link>
+            {!user ? (
+              <>
+                <Link
+                  to="/login"
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Login</span>
+                </Link>
+                
+                <Link
+                  to="/login"
+                  className="bg-gradient-brand hover:opacity-95 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-indigo-500/10 hover:shadow-sky-500/20"
+                >
+                  Get Started
+                </Link>
+              </>
+            ) : (
+              <>
+                <span className="text-xs text-slate-500 dark:text-gray-400 font-medium">Hi, {user.name.split(' ')[0]}</span>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-rose-500 hover:text-rose-600 transition-colors cursor-pointer"
+                >
+                  <LogIn className="w-4 h-4 rotate-180" />
+                  <span>Logout</span>
+                </button>
+              </>
+            )}
 
-            <button className="p-1.5 rounded-xl text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/40 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-white/5 transition-all cursor-pointer">
+            <Link 
+              to={user ? "/profile" : "/login"}
+              className="p-1.5 rounded-xl text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/40 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-white/5 transition-all cursor-pointer"
+            >
               <User className="w-4.5 h-4.5" />
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -91,11 +111,11 @@ export default function Navbar() {
             </button>
 
             <Link
-              to="/login"
+              to={user ? "/profile" : "/login"}
               className="p-2.5 rounded-xl text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
               onClick={closeMenu}
             >
-              <LogIn className="w-5 h-5" />
+              <User className="w-5 h-5" />
             </Link>
             
             <button
@@ -138,23 +158,49 @@ export default function Navbar() {
             })}
             
             <div className="pt-4 pb-2 border-t border-slate-200 dark:border-white/5 px-3 flex flex-col gap-2">
-              <Link
-                to="/login"
-                onClick={closeMenu}
-                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-base font-semibold text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/40 dark:border-white/5 border border-slate-200 transition-all"
-              >
-                <LogIn className="w-5 h-5" />
-                <span>Login</span>
-              </Link>
-              
-              <Link
-                to="/dashboard"
-                onClick={closeMenu}
-                className="flex items-center justify-center gap-2 w-full bg-gradient-brand text-white px-4 py-2.5 rounded-xl text-base font-semibold transition-all shadow-md"
-              >
-                <Sparkles className="w-5 h-5" />
-                <span>Get Started</span>
-              </Link>
+              {!user ? (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={closeMenu}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-base font-semibold text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/40 dark:border-white/5 border border-slate-200 transition-all"
+                  >
+                    <LogIn className="w-5 h-5" />
+                    <span>Login</span>
+                  </Link>
+                  
+                  <Link
+                    to="/login"
+                    onClick={closeMenu}
+                    className="flex items-center justify-center gap-2 w-full bg-gradient-brand text-white px-4 py-2.5 rounded-xl text-base font-semibold transition-all shadow-md"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    <span>Get Started</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/profile"
+                    onClick={closeMenu}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-base font-semibold text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/40 dark:border-white/5 border border-slate-200 transition-all"
+                  >
+                    <User className="w-5 h-5" />
+                    <span>View Profile</span>
+                  </Link>
+                  
+                  <button
+                    onClick={() => {
+                      closeMenu();
+                      logout();
+                    }}
+                    className="flex items-center justify-center gap-2 w-full bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 rounded-xl text-base font-semibold transition-all shadow-md cursor-pointer"
+                  >
+                    <LogIn className="w-5 h-5 rotate-180" />
+                    <span>Logout</span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
