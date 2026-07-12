@@ -18,6 +18,11 @@ An AI-powered web application that analyzes guest reviews, detects sentiment and
 - **Dotenv** (environment variables configuration)
 - **Nodemon** (hot reloading in development)
 - **MongoDB & Mongoose ODM** (Integrated in Week 5 for full CRUD operations and data persistence)
+- **Bcrypt.js** (Secure 12-round password hashing)
+- **JSONWebToken (JWT)** (Secure token authorization headers)
+- **Passport.js** (Google strategy integration with simulated fallback support)
+- **Zod** (Robust runtime API input validation schemas)
+- **Express Rate Limit** (Anti-brute force throttling middleware)
 
 ---
 
@@ -64,15 +69,24 @@ classDiagram
     Property "1" --> "0..*" Review : has
 ```
 
-### Set Up the Database
-To connect the application to MongoDB:
+### 💾 Database & Security Configuration
+
+### Set Up the Database and Authentication Secrets
+To connect the application to MongoDB and enable security features:
 1. Ensure a local MongoDB instance is running at `mongodb://localhost:27017` or obtain a connection string from [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 2. Create or edit the `backend/.env` file.
-3. Add the `MONGO_URI` environment variable:
+3. Configure the following environment variables:
    ```env
+   PORT=5000
+   NODE_ENV=development
    MONGO_URI=mongodb://localhost:27017/insightstay
+   JWT_SECRET=your_jwt_secret_signature_key
+   
+   # Optional: Standard Google OAuth Client IDs (falls back to a simulated Consent page if empty)
+   GOOGLE_CLIENT_ID=dummy-client-id
+   GOOGLE_CLIENT_SECRET=dummy-client-secret
    ```
-4. Start the backend server (`npm run start` or `npm run dev`). Mongoose will connect to the database and automatically seed default review reports if the `Review` collection is empty.
+4. Start the backend server (`npm run start` or `npm run dev`). Mongoose will connect to the database and seed default review reports if empty. The auth middleware will automatically enforce token validation.
 
 ---
 
@@ -81,31 +95,45 @@ To connect the application to MongoDB:
 ```text
 homestay-review-insight-ai/
 ├── backend/                  # Express.js backend application
+│   ├── config/
+│   │   └── passport.js       # Passport Google Strategy and serializer configurations
 │   ├── middleware/
+│   │   ├── auth.js           # JWT Authorization validation middleware (requireAuth)
 │   │   └── errorHandler.js   # Global error handling middleware
 │   ├── routes/
-│   │   └── reviews.js        # REST API endpoints for reviews (CRUD, stats, sync)
+│   │   ├── auth.js           # Register, Login, Me session, and Google OAuth endpoints
+│   │   └── reviews.js        # REST API endpoints for reviews (Secured by JWT requireAuth)
 │   ├── .env                  # Environment configurations (local only)
 │   ├── .env.example          # Template for environment variables
 │   ├── package.json          # Node dependencies and scripts
 │   ├── server.js             # Main server entry file (Port 5000)
-│   └── verify.js             # Programmatic REST API test script
+│   ├── verify.js             # Programmatic CRUD verification script
+│   ├── verify_auth.js        # Programmatic JWT validation and Rate Limiter test script
+│   ├── capture_auth.js       # Puppeteer browser automation screenshot capture script
+│   └── compile_pdf_w6.py     # Python PDF deliverable generation script
 ├── frontend/                 # React frontend application
 │   ├── public/               # Static assets & icons
 │   ├── src/
 │   │   ├── assets/           # React component assets
 │   │   ├── components/       # Reusable UI components
-│   │   │   ├── Navbar.jsx    # Sticky navigation menu (with mobile toggle drawer)
+│   │   │   ├── ui/           # Documented component library (Button, Toast, Input, etc)
+│   │   │   ├── Navbar.jsx    # Dynamic sticky navigation menu (Auth state adaptive)
 │   │   │   ├── Hero.jsx      # Welcome banner with glowing layout
 │   │   │   ├── Card.jsx      # Reusable content card
+│   │   │   ├── ProtectedRoute.jsx # Route Guard checking user authentication before view
 │   │   │   └── Footer.jsx    # Categorized link lists & social links
+│   │   ├── context/
+│   │   │   ├── ThemeContext.jsx # Light/dark mode context toggler
+│   │   │   └── AuthContext.jsx # Global JWT session state, sign-in, and authFetch handlers
 │   │   ├── pages/            # Application route screens
 │   │   │   ├── Home.jsx      # Home landing screen
-│   │   │   ├── Dashboard.jsx # Analytical dashboard workspace (connected to backend)
+│   │   │   ├── Dashboard.jsx # Secured analytical dashboard workspace (via authFetch)
 │   │   │   ├── About.jsx     # Vision, values, and NLP workflow
-│   │   │   └── Login.jsx     # Login page (with Google mock OAuth)
+│   │   │   ├── Login.jsx     # Dual-view Login & Register templates (with micro-animations)
+│   │   │   ├── Profile.jsx   # Secured account dashboard page displaying provider metadata
+│   │   │   └── OAuthSuccess.jsx # OAuth receiver extracting callback query params
 │   │   ├── App.css           # Local style exceptions
-│   │   ├── App.jsx           # Main routing entry wrapper
+│   │   ├── App.jsx           # Main routing entry and AuthProvider wrapper
 │   │   ├── index.css         # Global styles and Tailwind configuration
 │   │   └── main.jsx          # React DOM render script
 │   ├── package.json          # Dependencies & script configurations
@@ -135,11 +163,23 @@ npm run dev
 ```
 The server will start listening on `http://localhost:5000`.
 
-### 4. Run programmatic API verification:
+### 4. Run programmatic CRUD verification:
 ```bash
 node verify.js
 ```
-This runs assertions across all 7 endpoints to ensure everything functions properly.
+This runs assertions across the basic database persistent operations.
+
+### 5. Run programmatic Authentication & Rate-Limit verification:
+```bash
+node verify_auth.js
+```
+This verifies JWT issuance, access blocking on secure endpoints, validation rules, and brute-force 429 rate limit triggers.
+
+### 6. Run automated screenshots capture:
+```bash
+node capture_auth.js
+```
+Uses Puppeteer to run flows in a headless browser, saving captured results to the `/screenshots` folder. Compile them into a PDF by running `python compile_pdf_w6.py`.
 
 ---
 
@@ -162,6 +202,19 @@ npm install
 npm run dev
 ```
 Open your browser to the local URL (usually `http://localhost:5173`) to view the application.
+
+---
+
+## ✨ Features Implemented (Week 6 — Authentication & Security System)
+
+1. **Secure Registration with bcrypt**: Added `POST /api/auth/register` validating fields using Zod, checking for email duplicates (returns `400`), and hashing credentials via 12-round salt hashing before storing in MongoDB.
+2. **JWT Credentials Login**: Set up `POST /api/auth/login` validating inputs, checking hashes, and returning signed JSON Web Tokens expiring in 7 days.
+3. **Protected API Endpoints**: Created `requireAuth` middleware evaluating header Bearer tokens, attaching parsed `req.user` details, and securing the reviews API resource.
+4. **Passport.js OAuth (Google Provider)**: Configured GoogleStrategy with a seamless simulated consent screen fallback if credentials are unprovided. Handles callback tokens and user creation.
+5. **Brute Force Rate Limiter**: Configured `express-rate-limit` restricting IPs to a max of 5 auth attempts per 15 minutes.
+6. **Frontend Route Guards**: Added `ProtectedRoute` preventing access to `/dashboard` and `/profile` routes without a valid JWT, redirecting unauthenticated flows to `/login`.
+7. **Interactive Profile Page**: Created `/profile` dashboard displaying logged-in user credentials and active provider session metadata.
+8. **Automated Deliverables Scripts**: Created programmatic test suite `verify_auth.js`, automated browser flow grabber `capture_auth.js`, and Python PDF layout compiler `compile_pdf_w6.py`. Exported Thunder/Postman test collection (`W6_AuthAPICollection_TBI-26100216.json`).
 
 ---
 
