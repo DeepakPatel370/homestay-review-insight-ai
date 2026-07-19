@@ -15,6 +15,7 @@ export default function Navbar() {
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
     { name: 'Dashboard', path: '/dashboard', icon: BarChart3 },
+    { name: 'AI Generator', path: '/ai-generator', icon: Sparkles },
     { name: 'About', path: '/about', icon: Info },
   ]
 

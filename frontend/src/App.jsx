@@ -8,6 +8,7 @@ import About from './pages/About'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
 import OAuthSuccess from './pages/OAuthSuccess'
+import AIFeature from './pages/AIFeature'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import './App.css'
@@ -29,6 +30,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/ai-generator" 
+                element={
+                  <ProtectedRoute>
+                    <AIFeature />
                   </ProtectedRoute>
                 } 
               />

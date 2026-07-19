@@ -7,6 +7,7 @@ import { configurePassport } from './config/passport.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import reviewsRouter from './routes/reviews.js';
 import authRouter from './routes/auth.js';
+import aiRouter from './routes/ai.js';
 import Property from './models/Property.js';
 import Review from './models/Review.js';
 
@@ -118,6 +119,7 @@ app.get('/health', (req, res) => {
 // Register API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/reviews', reviewsRouter);
+app.use('/api/ai', aiRouter);
 
 // Undefined routes handler (404)
 app.use((req, res, next) => {
