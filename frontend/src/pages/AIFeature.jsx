@@ -78,8 +78,9 @@ export default function AIFeature() {
     setResult(null)
 
     try {
-      const token = localStorage.getItem('insightstay_token')
-      const response = await fetch('/api/ai/analyze', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+      const token = localStorage.getItem('token') || localStorage.getItem('insightstay_token')
+      const response = await fetch(`${API_URL}/ai/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +135,7 @@ export default function AIFeature() {
   const handleSaveToReviews = async () => {
     if (!result) return
     try {
-      const token = localStorage.getItem('insightstay_token')
+      const token = localStorage.getItem('token') || localStorage.getItem('insightstay_token')
       const res = await fetch('/api/reviews', {
         method: 'POST',
         headers: {

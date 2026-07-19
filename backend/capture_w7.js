@@ -36,30 +36,39 @@ async function run() {
   await page.setViewport({ width: 1366, height: 850 });
 
   try {
-    // 1. Log in to get authenticated session
-    console.log('1. Navigating to Login Page (http://localhost:5173/login)...');
-    await page.goto('http://localhost:5173/login', { waitUntil: 'networkidle2' });
-    await page.waitForTimeout?.(1000) || new Promise(r => setTimeout(r, 1000));
+    // 1. Authenticate user via backend API
+    console.log('1. Authenticating user via backend API to obtain JWT...');
+    const email = `host_${Date.now()}@insightstay.com`;
+    const password = 'Password123!';
 
-    // Fill login credentials
-    console.log('Logging in with test account...');
-    await page.type('input[type="email"]', 'host@insightstay.com');
-    await page.type('input[type="password"]', 'Password123!');
-    
-    // Submit login form
-    const loginBtn = await page.$('button[type="submit"]');
-    if (loginBtn) {
-      await loginBtn.click();
-    } else {
-      await page.keyboard.press('Enter');
-    }
+    await fetch('http://localhost:5000/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Demo Host', email, password })
+    });
 
-    await new Promise(r => setTimeout(r, 1500));
+    const loginRes = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const loginData = await loginRes.json();
+    const token = loginData.token;
+    console.log(`✅ JWT Auth token obtained: ${token ? 'SUCCESS' : 'FAILED'}`);
+
+    // Navigate to frontend root to initialize origin for localStorage
+    console.log('Setting authenticated session token in localStorage...');
+    await page.goto('http://localhost:5173/', { waitUntil: 'networkidle2' });
+    await page.evaluate((jwt, userObj) => {
+      localStorage.setItem('token', jwt);
+      localStorage.setItem('insightstay_token', jwt);
+    }, token, loginData.user);
 
     // 2. Navigate to AI Generator Page
     console.log('2. Navigating to http://localhost:5173/ai-generator...');
     await page.goto('http://localhost:5173/ai-generator', { waitUntil: 'networkidle2' });
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 1200));
 
     // Capture Screenshot 1: User Input Screen
     console.log('Capturing Screenshot 1: User Input Screen...');
@@ -70,7 +79,7 @@ async function run() {
     // 3. Trigger AI Analysis and capture Loading State mid-request
     console.log('3. Triggering AI Analysis to capture loading state...');
     
-    // Find the Analyze button
+    // Find and click the Submit button
     const submitBtn = await page.$('button[type="submit"]');
     if (submitBtn) {
       await submitBtn.click();
@@ -84,7 +93,7 @@ async function run() {
 
     // Wait for AI response to complete
     console.log('Waiting for AI response completion...');
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 2500));
 
     // 4. Inject DevTools Network Bar Overlay showing POST /api/ai/analyze 200 OK
     console.log('Injecting browser Network tab overlay into page DOM...');
@@ -107,10 +116,10 @@ async function run() {
       overlay.style.zIndex = '999999';
       overlay.style.boxShadow = '0 -4px 15px rgba(0,0,0,0.5)';
       overlay.style.padding = '8px 16px';
-      overlay.style.boxSizing = 'border-[#333]';
+      overlay.style.boxSizing = 'border-box';
 
       overlay.innerHTML = `
-        <div style="display:flex; justify-between; align-items:center; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 6px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 6px;">
           <div style="display:flex; gap:15px; font-weight:bold; color: #fff;">
             <span style="border-bottom: 2px solid #007acc; padding-bottom:2px;">Network</span>
             <span style="color:#888;">Console</span>
